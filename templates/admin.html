@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policía de Río Negro - Control de Turnos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <header style="background-color: #0f172a;">
+        <div class="header-container">
+            <div class="header-brand">
+                <svg class="header-logo" style="color: #94a3b8;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                    </path>
+                </svg>
+                <div class="header-title">
+                    <h1>Panel de Control Interno</h1>
+                    <p style="color: #64748b;">Policía de Río Negro - Gestión de Antecedentes</p>
+                </div>
+            </div>
+            <a href="{{ url_for('index') }}" class="btn-nav">Ver Formulario Público</a>
+        </div>
+    </header>
+
+    <main class="container-admin">
+        <div class="card">
+
+            <div class="admin-toolbar">
+                <div>
+                    <h2>Historial de Turnos</h2>
+                    <p>Listado completo de reservas y auditoría de estados.</p>
+                </div>
+                <div>
+                    <span class="badge-count">Total: {{ turnos|length }} registros</span>
+                </div>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-success">
+                <svg class="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div>{{ message }}</div>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            {% if turnos %}
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">Fecha / Hora</th>
+                            <th style="width: 15%;">DNI</th>
+                            <th style="width: 25%;">Nombre y Apellido</th>
+                            <th style="width: 25%;">Contacto</th>
+                            <th style="width: 15%;">Estado</th>
+                            <th style="width: 15%; text-align: center;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for turno in turnos %}
+                        <tr class="{% if turno.estado == 'cancelado' %}row-cancelado{% endif %}">
+                            <td>
+                                <div style="font-weight: 700; color: #0f172a;">{{ turno.fecha }}</div>
+                                <div style="font-size: 0.75rem; color: var(--police-blue-light); font-weight: 600;">{{
+                                    turno.hora }} hs</div>
+                            </td>
+                            <td class="font-mono">{{ turno.dni }}</td>
+                            <td style="font-weight: 500; color: #334155;">{{ turno.apellido }}, {{ turno.nombre }}</td>
+                            <td>
+                                <div>{{ turno.email }}</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">{{ turno.telefono }}</div>
+                            </td>
+                            <td>
+                                <span
+                                    class="status-badge {% if turno.estado == 'activo' %}status-activo{% else %}status-cancelado{% endif %}">
+                                    {{ turno.estado.upper() }}
+                                </span>
+                            </td>
+                            <td style="text-align: center;">
+                                {% if turno.estado == 'activo' %}
+                                <form action="{{ url_for('cancelar_turno', id_turno=turno.id) }}" method="POST"
+                                    onsubmit="return confirm('¿Seguro que desea cancelar este turno?');">
+                                    <button type="submit" class="btn-danger-sm">
+                                        Cancelar Turno
+                                    </button>
+                                </form>
+                                {% else %}
+                                <span class="text-italic">Sin acciones</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <svg class="empty-state-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                    </path>
+                </svg>
+                <h3>No hay turnos registrados</h3>
+                <p>Las solicitudes que se realicen desde la web pública aparecerán en esta lista.</p>
+            </div>
+            {% endif %}
+
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Policía de la Provincia de Río Negro. Área de Sistemas.</p>
+    </footer>
+
+</body>
+
+</html>

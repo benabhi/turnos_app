@@ -4,85 +4,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Policía de Río Negro - Turno Confirmado</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Policía de Río Negro - Turno Otorgado</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
+<body>
 
-    <!-- Encabezado Institucional -->
-    <header class="bg-blue-900 text-white shadow-md">
-        <div class="max-w-4xl mx-auto px-4 py-5 flex items-center gap-3">
-            <svg class="w-12 h-12 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                </path>
-            </svg>
-            <div>
-                <h1 class="text-xl font-bold tracking-wide uppercase">Policía de Río Negro</h1>
-                <p class="text-xs text-blue-200">Provincia de Río Negro - República Argentina</p>
+    <header>
+        <div class="header-container">
+            <div class="header-brand">
+                <svg class="header-logo" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                    </path>
+                </svg>
+                <div class="header-title">
+                    <h1>Policía de Río Negro</h1>
+                    <p>Trámites y Certificaciones Ciudadanas</p>
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- Contenido Principal -->
-    <main class="max-w-md w-full mx-auto px-4 py-12 flex-grow flex items-center justify-center">
-        <div class="bg-white rounded-2xl shadow-xl border border-slate-100 p-8 text-center space-y-6">
+    <main class="container-card">
+        <div class="card" style="text-align: center; width: 100%;">
 
-            <!-- Icono de Éxito -->
-            <div class="mx-auto w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-500">
-                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
+            <div class="success-icon-wrapper">
+                <svg style="width: 2.5rem; height: 2.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
                 </svg>
             </div>
 
-            <!-- Título del Mensaje -->
-            <div class="space-y-2">
-                <h2 class="text-2xl font-bold text-slate-900">¡Turno Confirmado!</h2>
-                <p class="text-sm text-slate-500">Tu turno ha sido registrado correctamente en la base de datos.</p>
+            <div class="card-header" style="border: none; margin-bottom: 1rem; padding: 0;">
+                <h2>¡Turno Otorgado!</h2>
+                <p>Tu turno ha quedado asentado de forma exitosa en el sistema.</p>
             </div>
 
-            <!-- Detalle del Turno -->
-            <div class="bg-slate-50 border border-slate-100 rounded-xl p-5 text-left space-y-3">
-                <div>
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wide">Solicitante</span>
-                    <p class="text-slate-800 font-semibold">{{ nombre }} {{ apellido }}</p>
+            <div class="receipt-box">
+                <div class="receipt-row">
+                    <div class="label-receipt">Interesado</div>
+                    <div class="value-receipt">{{ nombre }} {{ apellido }}</div>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="receipt-grid">
                     <div>
-                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wide">Fecha</span>
-                        <p class="text-slate-800 font-semibold">{{ fecha }}</p>
+                        <div class="label-receipt">Fecha</div>
+                        <div class="value-receipt">{{ fecha }}</div>
                     </div>
                     <div>
-                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wide">Hora</span>
-                        <p class="text-slate-800 font-semibold">{{ hora }} hs</p>
+                        <div class="label-receipt">Horario asignado</div>
+                        <div class="value-receipt">{{ hora }} hs</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Información Adicional -->
-            <div
-                class="text-xs text-slate-400 bg-blue-50 text-blue-700 p-4 rounded-lg border border-blue-100 text-center">
-                Por favor, preséntese en la dependencia policial con su DNI original y comprobante de pago de la tasa.
+            <div class="info-note">
+                Presentate puntualmente con tu DNI físico en la delegación de antecedentes correspondiente.
             </div>
 
-            <!-- Botón para volver -->
-            <div class="pt-2">
-                <a href="{{ url_for('index') }}"
-                    class="inline-block w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold py-3 px-4 rounded-lg shadow transition duration-150">
-                    Volver a Inicio
+            <div style="padding-top: 0.5rem;">
+                <a href="{{ url_for('index') }}" class="btn btn-dark">
+                    Volver al Inicio
                 </a>
             </div>
         </div>
     </main>
 
-    <!-- Pie de Página -->
-    <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <p>&copy; 2026 Policía de la Provincia de Río Negro.</p>
-        </div>
+    <footer>
+        <p>&copy; 2026 Policía de la Provincia de Río Negro.</p>
     </footer>
 
 </body>
