@@ -12,24 +12,19 @@ El sistema resuelve la problemática de asignación de turnos mediante una arqui
 * **Validación del lado del Cliente (JS)**: Comprobación de formatos de texto, DNI de 7 u 8 dígitos, celulares argentinos de 10-11 dígitos y correos electrónicos válidos antes de enviar la solicitud.
 * **Consulta de Disponibilidad en Tiempo Real**: API dinámica que consulta la base de datos y deshabilita los horarios que ya están ocupados por otros usuarios para la fecha elegida.
 
-
 2. **Validación de Servidor Robusta (`lib/validation.py`)**:
 * Capa de seguridad backend mediante Expresiones Regulares (regex) para evitar inyecciones de datos corruptos o bypass de validaciones del navegador.
-
 
 3. **Persistencia Local (`lib/database.py`)**:
 * Base de datos relacional ultraligera basada en **SQLite3**.
 * Restricción lógica para garantizar la unicidad de las citas (no pueden existir dos turnos activos para el mismo día y la misma hora).
 
-
 4. **Panel de Control Administrativo (`/admin`)**:
 * Listado completo de todas las solicitudes registradas, ordenadas de forma cronológica (fecha y hora).
 * **Baja Lógica (Borrado Lógico)**: Al cancelar un turno, el registro no se elimina físicamente de la base de datos (preservando el historial de auditoría del sistema). El estado cambia a `cancelado`, liberando automáticamente el horario para que otro ciudadano pueda reservarlo.
 
-
 5. **Alineación Estética Nv-1**:
 * Estilo minimalista y profesional adaptado a la paleta institucional (azules policiales, gris de fondo y tipografía moderna), implementado mediante CSS nativo (`static/style.css`) sin dependencias externas (CDNs) ni frameworks que ralenticen la carga del sitio.
-
 
 
 ## 📂 Estructura del Proyecto
@@ -124,7 +119,6 @@ cd C:\Users\benabhi\Documents\Code\python\turnos_app
 
 ```
 
-
 2. **Activar el Entorno Virtual (`venv`)**:
 * Si usás **PowerShell**:
 ```powershell
@@ -132,31 +126,25 @@ cd C:\Users\benabhi\Documents\Code\python\turnos_app
 
 ```
 
-
 * Si usás **CMD (Símbolo del sistema)** clásico:
 ```cmd
 .\venv\Scripts\activate.bat
 
 ```
 
-
-
-
 *Sabrás que está activo porque aparecerá el prefijo `(venv)` al inicio de la línea de comandos.*
+
 3. **Instalar dependencias**:
 ```powershell
 pip install -r requirements.txt
 
 ```
 
-
 4. **Ejecutar el Servidor**:
 ```powershell
 python main.py
 
 ```
-
-
 
 ### 🐧 En Linux (Ubuntu / Debian / Mint)
 
@@ -167,13 +155,11 @@ cd /ruta/hacia/tu/carpeta/turnos_app
 
 ```
 
-
 2. **Activar el Entorno Virtual (`venv`)**:
 ```bash
 source venv/bin/activate
 
 ```
-
 
 *Sabrás que está activo porque tu indicador de la terminal cambiará para mostrar `(venv)` al principio.*
 3. **Instalar dependencias**:
@@ -183,14 +169,11 @@ pip install -r requirements.txt
 
 ```
 
-
 4. **Ejecutar el Servidor**:
 ```bash
 python3 main.py
 
 ```
-
-
 
 ### 🌐 Acceder a la aplicación (Cualquier Sistema Operativo)
 
