@@ -162,6 +162,7 @@ source venv/bin/activate
 ```
 
 *Sabrás que está activo porque tu indicador de la terminal cambiará para mostrar `(venv)` al principio.*
+
 3. **Instalar dependencias**:
 Asegurate de tener el gestor de paquetes actualizado e instalá los requerimientos:
 ```bash
