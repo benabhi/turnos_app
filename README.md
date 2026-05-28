@@ -2,8 +2,6 @@
 
 Este proyecto es una aplicación web minimalista, responsiva y autocontenida desarrollada para la gestión de turnos administrativos del **Certificado de Antecedentes Penales** de la Policía de la Provincia de Río Negro. El desarrollo fue concebido bajo los lineamientos y estándares solicitados para la cátedra de **Sistemas de Información II**.
 
----
-
 ## 🚀 Funcionalidades Principales
 
 El sistema resuelve la problemática de asignación de turnos mediante una arquitectura de software limpia y validaciones en dos capas (Cliente-Servidor):
@@ -27,8 +25,6 @@ El sistema resuelve la problemática de asignación de turnos mediante una arqui
 
 5. **Alineación Estética Nv-1**:
    - Estilo minimalista y profesional adaptado a la paleta institucional (azules policiales, gris de fondo y tipografía moderna), implementado mediante CSS nativo (`static/style.css`) sin dependencias externas (CDNs) ni frameworks que ralenticen la carga del sitio.
-
----
 
 ## 📂 Estructura del Proyecto
 
@@ -55,3 +51,96 @@ turnos_app/
 │       formulario.html   # Formulario público de solicitud de citas
 │
 └───venv/                 # Entorno virtual de Python (Librerías del sistema)
+
+```
+
+## 🛠️ Detalle de los Archivos Clave
+
+* **`main.py`**: Es el núcleo de la aplicación. Configura la aplicación Flask, expone los endpoints públicos, las APIs dinámicas y la sección de administración, gestionando el flujo de datos entre el frontend, las validaciones y la persistencia.
+* **`lib/database.py`**: Contiene las instrucciones SQL que crean la tabla de la base de datos y controlan los estados (`activo` / `cancelado`) de los registros. No permite borrados físicos para asegurar la trazabilidad del sistema.
+* **`lib/validation.py`**: Módulo que aplica expresiones regulares y lógica matemática en el servidor para verificar que ningún campo esté vacío, que la fecha no haya expirado y que las citas se programen únicamente dentro de la lista blanca de horarios (`08:00 a 13:00`).
+* **`static/style.css`**: Almacena de forma centralizada la estética visual de la app, implementando layouts modernos mediante Flexbox y CSS Grid para garantizar que el sistema sea responsivo (adaptable a celulares, tablets y computadoras).
+* **`templates/`**: Almacena las páginas del sistema. La comunicación de datos dinámicos entre el backend en Python y estas pantallas se procesa mediante las etiquetas de renderizado de Jinja2 (como `{% if %}` y `{{ variable }}`).
+
+## 🎨 Criterios de Diseño Adoptados (UI / UX)
+
+El desarrollo del sistema se estructuró siguiendo estrictamente los principios de diseño de interfaz de usuario y experiencia de usuario analizados en la materia:
+
+### 1. Enfoque Basado en el Modelo del Diseñador (Look-and-Feel Iceberg)
+
+Siguiendo las pautas de diseño arquitectónico , no se priorizó una "cara bonita" superficial al inicio del desarrollo. El diseño comenzó desde la base del iceberg: las **Relaciones entre Objetos** (esquema de base de datos relacional y restricciones lógicas) , continuó con las **Técnicas de Interacción** (APIs dinámicas de consulta y eventos JS) , y decantó naturalmente en la **Presentación Visual**. Esto garantiza que el software se adapte sólidamente al modelo mental y a las expectativas reales del usuario final.
+
+### 2. Establecimiento de Punto Focal y Jerarquía Visual
+
+Respetando las pautas de lectura occidentales, donde los usuarios inician la exploración en la parte superior izquierda de la pantalla, se ubicó allí la identidad institucional y el logotipo de la Policía de Río Negro. A partir de este eje, se construyó el **Punto Focal** principal mediante una tarjeta centralizada (`.card`) aislada visualmente del fondo con sombras suaves (`box-shadow`), guiando el orden en la ejecución de las tareas de manera comprensible y fluida.
+
+### 3. Consistencia, Legibilidad y Aplicación de la Ley de Fitt
+
+* **Consistencia**: Se estandarizó la interfaz mediante un diseño constante en las tres ventanas del sistema (`formulario`, `exito` y `admin`), manteniendo cabeceras, pies de página y estructuras homogéneas.
+
+
+* **Legibilidad**: El layout cuenta con alineaciones basadas en CSS Grid y un espaciado equilibrado que maximiza la legibilidad. El uso del color se consideró una herramienta informativa secundaria : se aplicó una paleta homogénea, sobria y de alta resolución (texto oscuro `#1e293b` sobre fondo blanco o amarillo sutil de precaución) apropiada para aplicaciones de corte institucional.
+
+
+* **Ley de Fitt**: El botón principal de confirmación se diseñó a lo ancho de todo el contenedor (`width: 100%`) y con un área de clic grande, reduciendo significativamente el tiempo que le toma al usuario alcanzar el objetivo de control.
+
+
+
+### 4. Supresión de Valores por "Defecto" y Anticipación Cognitiva
+
+En cumplimiento estricto con las directrices de UX que prohíben el uso de textos genéricos por "defecto" , el elemento `<select>` de horarios utiliza mensajes dinámicos inteligentes para anticiparse a las necesidades del ciudadano. Al ingresar al sitio, se muestra la frase informativa *"Primero seleccione fecha"*; al cambiar el calendario, se actualiza a *"Cargando horarios disponibles..."*; y finalmente se muta a *"Seleccione horario"*.
+
+### 5. Arquitectura de Retroalimentación (Feedback) Efectiva
+
+El sistema implementa mecanismos explícitos para mantener al usuario informado en tiempo real:
+
+* **Notificación de Entrada Incorrecta (Feedback Tipo 3)**: Al perder el foco un campo inválido (DNI, Email, Celular), el campo se tiñe sutilmente de rojo (`:user-invalid`) y expone inmediatamente una etiqueta explicativa (`.error-feedback`) detallando cómo corregir el problema.
+
+
+* **Aceptación de la Solicitud Completa (Feedback Tipo 5)**: Al procesar la reserva con éxito en el backend, la aplicación rompe con respuestas secas u "extrañas" (como el texto plano "Entrada Aceptada"). En su lugar, emite una interfaz dedicada de comprobante impreso en pantalla (`exito.html`) que confirma de manera positiva que la acción se completó correctamente.
+
+### 6. Descentralización de Datos y Reducción de Latencia (Auditoría del Sistema)
+
+La aplicación implementa técnicas eficientes que colocan las computaciones pesadas en segundo plano (consultas asíncronas vía `fetch` / AJAX), permitiendo una interacción fluida y minimizando la latencia percibida por el usuario. Adicionalmente, el sistema captura características clave de auditoría (asentando marcas de tiempo de fecha y hora exacta en SQLite) , y facilita la descentralización de datos a nivel provincial al procesar de forma local y segura la base de datos de los ciudadanos.
+
+## ⚙️ Puesta en Marcha (Instalación y Uso)
+
+Seguí estos simples pasos en tu terminal de Windows para ejecutar el sistema de forma local:
+
+1. **Clonar o ubicarse en la carpeta del proyecto**:
+Abrí la terminal de comandos (PowerShell o CMD) dentro del directorio raíz:
+```powershell
+cd C:\Users\benabhi\Documents\Code\python\turnos_app
+
+```
+
+
+2. **Activar el Entorno Virtual (`venv`)**:
+```powershell
+.\venv\Scripts\Activate.ps1
+
+```
+
+
+*(Si usas CMD clásico, utiliza: `.\venv\Scripts\activate.bat`)*. Sabrás que está activo porque aparecerá `(venv)` al inicio de la línea de comandos de tu terminal.
+3. **Instalar dependencias**:
+Asegurate de tener Flask instalado en el entorno:
+```powershell
+pip install -r requirements.txt
+
+```
+
+
+4. **Ejecutar el Servidor**:
+Iniciá la aplicación ejecutando el controlador principal:
+```powershell
+python main.py
+
+```
+
+
+5. **Acceder a la aplicación**:
+Abre tu navegador de preferencia e ingresa a las siguientes direcciones:
+* **Sección Pública (Formulario)**: [http://127.0.0.1:5000](https://www.google.com/search?q=http://127.0.0.1:5000)
+* **Sección Privada (Administración)**: [http://127.0.0.1:5000/admin](https://www.google.com/search?q=http://127.0.0.1:5000/admin)
+
