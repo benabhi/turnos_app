@@ -7,24 +7,30 @@ Este proyecto es una aplicación web minimalista, responsiva y autocontenida des
 El sistema resuelve la problemática de asignación de turnos mediante una arquitectura de software limpia y validaciones en dos capas (Cliente-Servidor):
 
 1. **Formulario Público Dinámico (`/`)**:
-   - Registro de datos del ciudadano: Nombre, Apellido, DNI, Teléfono y Email.
-   - Calendario inteligente que bloquea de forma interactiva fechas pasadas y fines de semana.
-   - **Validación del lado del Cliente (JS)**: Comprobación de formatos de texto, DNI de 7 u 8 dígitos, celulares argentinos de 10-11 dígitos y correos electrónicos válidos antes de enviar la solicitud.
-   - **Consulta de Disponibilidad en Tiempo Real**: API dinámica que consulta la base de datos y deshabilita los horarios que ya están ocupados por otros usuarios para la fecha elegida.
+* Registro de datos del ciudadano: Nombre, Apellido, DNI, Teléfono y Email.
+* Calendario inteligente que bloquea de forma interactiva fechas pasadas y fines de semana.
+* **Validación del lado del Cliente (JS)**: Comprobación de formatos de texto, DNI de 7 u 8 dígitos, celulares argentinos de 10-11 dígitos y correos electrónicos válidos antes de enviar la solicitud.
+* **Consulta de Disponibilidad en Tiempo Real**: API dinámica que consulta la base de datos y deshabilita los horarios que ya están ocupados por otros usuarios para la fecha elegida.
+
 
 2. **Validación de Servidor Robusta (`lib/validation.py`)**:
-   - Capa de seguridad backend mediante Expresiones Regulares (regex) para evitar inyecciones de datos corruptos o bypass de validaciones del navegador.
+* Capa de seguridad backend mediante Expresiones Regulares (regex) para evitar inyecciones de datos corruptos o bypass de validaciones del navegador.
+
 
 3. **Persistencia Local (`lib/database.py`)**:
-   - Base de datos relacional ultraligera basada en **SQLite3**.
-   - Restricción lógica para garantizar la unicidad de las citas (no pueden existir dos turnos activos para el mismo día y la misma hora).
+* Base de datos relacional ultraligera basada en **SQLite3**.
+* Restricción lógica para garantizar la unicidad de las citas (no pueden existir dos turnos activos para el mismo día y la misma hora).
+
 
 4. **Panel de Control Administrativo (`/admin`)**:
-   - Listado completo de todas las solicitudes registradas, ordenadas de forma cronológica (fecha y hora).
-   - **Baja Lógica (Borrado Lógico)**: Al cancelar un turno, el registro no se elimina físicamente de la base de datos (preservando el historial de auditoría del sistema). El estado cambia a `cancelado`, liberando automáticamente el horario para que otro ciudadano pueda reservarlo.
+* Listado completo de todas las solicitudes registradas, ordenadas de forma cronológica (fecha y hora).
+* **Baja Lógica (Borrado Lógico)**: Al cancelar un turno, el registro no se elimina físicamente de la base de datos (preservando el historial de auditoría del sistema). El estado cambia a `cancelado`, liberando automáticamente el horario para que otro ciudadano pueda reservarlo.
+
 
 5. **Alineación Estética Nv-1**:
-   - Estilo minimalista y profesional adaptado a la paleta institucional (azules policiales, gris de fondo y tipografía moderna), implementado mediante CSS nativo (`static/style.css`) sin dependencias externas (CDNs) ni frameworks que ralenticen la carga del sitio.
+* Estilo minimalista y profesional adaptado a la paleta institucional (azules policiales, gris de fondo y tipografía moderna), implementado mediante CSS nativo (`static/style.css`) sin dependencias externas (CDNs) ni frameworks que ralenticen la carga del sitio.
+
+
 
 ## 📂 Estructura del Proyecto
 
@@ -46,7 +52,7 @@ turnos_app/
 │       style.css         # Archivo único de estilos CSS nativos para todo el sitio
 │
 ├───templates/            # Plantillas HTML procesadas por Jinja2
-│       admin.html        # Vista del Panel de Control Interno del Administrador
+│       admin.html        # Vista del Panel de Control Interno del Administrator
 │       exito.html        # Comprobante/Ticket digital emitido tras agendar con éxito
 │       formulario.html   # Formulario público de solicitud de citas
 │
@@ -61,7 +67,6 @@ turnos_app/
 * **`lib/validation.py`**: Módulo que aplica expresiones regulares y lógica matemática en el servidor para verificar que ningún campo esté vacío, que la fecha no haya expirado y que las citas se programen únicamente dentro de la lista blanca de horarios (`08:00 a 13:00`).
 * **`static/style.css`**: Almacena de forma centralizada la estética visual de la app, implementando layouts modernos mediante Flexbox y CSS Grid para garantizar que el sistema sea responsivo (adaptable a celulares, tablets y computadoras).
 * **`templates/`**: Almacena las páginas del sistema. La comunicación de datos dinámicos entre el backend en Python y estas pantallas se procesa mediante las etiquetas de renderizado de Jinja2 (como `{% if %}` y `{{ variable }}`).
-
 
 ## 🎨 Criterios de Diseño Adoptados (UI / UX)
 
@@ -83,7 +88,7 @@ Respetando las pautas de lectura occidentales, donde los usuarios inician la exp
 
 ### 4. Supresión de Valores por "Defecto" y Anticipación Cognitiva
 
-En cumplimiento estricto con las directrices de UX que prohíben el uso de textos genéricos por "defecto", el elemento `<select>` de horarios utiliza mensajes dinámicos inteligentes para anticiparse a las necesidades del ciudadano. Al ingresar al sitio, se muestra la frase informativa *"Primero seleccione fecha"*; al cambiar el calendario, se actualiza a *"Cargando horarios disponibles..."*; y finalmente se muta a *"Seleccione horario"*.
+En cumplimiento estricto con las directrices de UX que prohíben el uso de textos genéricos por "defecto", el elemento `<select>` de horarios utiliza mensajes dinámicos inteligentes para anticiparse a las necesidades del ciudadano. Al ingresar al sitio, se muestra la frase informativa *"Primero seleccione fecha"*; al cambio del calendario, se actualiza a *"Cargando horarios disponibles..."*; y finalmente se muta a *"Seleccione horario"*.
 
 ### 5. Arquitectura de Retroalimentación (Feedback) Efectiva
 
@@ -108,37 +113,88 @@ Para garantizar que la aplicación sea liviana, eficiente y modular, se seleccio
 
 ## ⚙️ Puesta en Marcha (Instalación y Uso)
 
-Seguí estos simples pasos en tu terminal de Windows para ejecutar el sistema de forma local:
+Seguí los pasos correspondientes a tu sistema operativo en la terminal para ejecutar el sistema de forma local:
 
-1. **Clonar o ubicarse en la carpeta del proyecto**:
-Abrí la terminal de comandos (PowerShell o CMD) dentro del directorio raíz:
+### 🪟 En Windows (PowerShell / CMD)
+
+1. **Ubicarse en la carpeta del proyecto**:
+Abrí la terminal dentro del directorio raíz de la aplicación:
 ```powershell
 cd C:\Users\benabhi\Documents\Code\python\turnos_app
 
 ```
 
+
 2. **Activar el Entorno Virtual (`venv`)**:
+* Si usás **PowerShell**:
 ```powershell
 .\venv\Scripts\Activate.ps1
 
 ```
 
-*(Si usas CMD clásico, utiliza: `.\venv\Scripts\activate.bat`)*. Sabrás que está activo porque aparecerá `(venv)` al inicio de la línea de comandos de tu terminal.
+
+* Si usás **CMD (Símbolo del sistema)** clásico:
+```cmd
+.\venv\Scripts\activate.bat
+
+```
+
+
+
+
+*Sabrás que está activo porque aparecerá el prefijo `(venv)` al inicio de la línea de comandos.*
 3. **Instalar dependencias**:
-Asegurate de tener Flask instalado en el entorno:
 ```powershell
 pip install -r requirements.txt
 
 ```
 
+
 4. **Ejecutar el Servidor**:
-Iniciá la aplicación ejecutando el controlador principal:
 ```powershell
 python main.py
 
 ```
 
-5. **Acceder a la aplicación**:
-Abre tu navegador de preferencia e ingresa a las siguientes direcciones:
-* **Sección Pública (Formulario)**: [http://127.0.0.1:5000](http://127.0.0.1:5000)
-* **Sección Privada (Administración)**: [http://127.0.0.1:5000/admin](http://127.0.0.1:5000/admin)
+
+
+### 🐧 En Linux (Ubuntu / Debian / Mint)
+
+1. **Ubicarse en la carpeta del proyecto**:
+Abrí la terminal y navegá hasta el directorio donde clonaste o descomprimiste la app:
+```bash
+cd /ruta/hacia/tu/carpeta/turnos_app
+
+```
+
+
+2. **Activar el Entorno Virtual (`venv`)**:
+```bash
+source venv/bin/activate
+
+```
+
+
+*Sabrás que está activo porque tu indicador de la terminal cambiará para mostrar `(venv)` al principio.*
+3. **Instalar dependencias**:
+Asegurate de tener el gestor de paquetes actualizado e instalá los requerimientos:
+```bash
+pip install -r requirements.txt
+
+```
+
+
+4. **Ejecutar el Servidor**:
+```bash
+python3 main.py
+
+```
+
+
+
+### 🌐 Acceder a la aplicación (Cualquier Sistema Operativo)
+
+Una vez que el servidor esté corriendo, abrí tu navegador web de preferencia e ingresa a las siguientes direcciones locales:
+
+* **Sección Pública (Formulario de reserva)**: [http://127.0.0.1:5000](http://127.0.0.1:5000)
+* **Sección Privada (Panel de Administración)**: [http://127.0.0.1:5000/admin](http://127.0.0.1:5000/admin)
