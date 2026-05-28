@@ -1,2 +1,15 @@
+# Entorno virtual y Base de Datos local
 venv/
 turnos_policia.db
+
+# Temporales de compilación de Python (Evita las carpetas __pycache__)
+__pycache__/
+*.pyc
+
+# Archivos invisibles del sistema operativo (Windows/Mac)
+Thumbs.db
+.DS_Store
+
+# Carpetas ocultas de editores de código (opcional, por si usás VS Code)
+.vscode/
+.idea/
